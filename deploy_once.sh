@@ -15,8 +15,7 @@ az webapp create --name $webappname --resource-group $resourcegroup --plan $weba
 
 # Deploy code from a public GitHub repository. 
 az webapp deployment source config --name $webappname --resource-group $resourcegroup \
---repo-url $gitrepo --branch master --manual-integration \
---cd-app-type AspNetCore --app-working-dir "npcsrv\\src\\npcblas"
+--repo-url $gitrepo --branch master --manual-integration
 
 # Copy the result of the following command into a browser to see the web app.
 echo http://$webappname.azurewebsites.net
