@@ -52,3 +52,5 @@ dotnet user-secrets set Cosmos:DatabaseName <database name>
 ```
 
 Azure app service configuration is done as above.
+
+[How to do relations with EF Core and Cosmos DB.](https://csharp.christiannagel.com/2019/04/24/cosmosdbwithefcore/)
