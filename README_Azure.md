@@ -6,6 +6,14 @@
 
 [Create an App Service app with continuous deployment from GitHub](https://docs.microsoft.com/en-us/azure/app-service/scripts/cli-continuous-deployment-github)
 
+## Creating the application template in the first place
+
+We use Blazor Server with individual authentication:
+
+```powershell
+dotnet new blazorserver -au Individual
+```
+
 ## Manual publishing steps
 
 - Have an Azure Web App made already.  (I used the `deploy_once.sh` script, which didn't do what I hoped, but did make one.
@@ -18,10 +26,6 @@ dotnet publish -c Release
 - In the Azure website (the Deployment Center for the web app), select Manual Deployment -> OneDrive
 - Copy the contents of the `npcblas2\bin\Release\netcoreapp3.1\publish` folder to a folder in OneDrive within `Apps\Azure Web Apps` that matches the name of the web app
 - Specify the folder in the Deployment Center wizard
-
-## Authentication and authorization
-
-We don't implement this ourselves but instead enable [Azure App Service Authentication](https://docs.microsoft.com/en-us/azure/app-service/overview-authentication-authorization).  This forces the user to log in before reaching us (that's okay) and populates `ClaimsPrincipal.Current` for us.  To support local debug builds as well we need to be okay with that thing being null, but in debug only.
 
 ## Google Authentication
 
@@ -38,6 +42,30 @@ dotnet user-secrets set Authentication:Google:ClientSecret <client secret> --pro
 ```
 
 Azure app service configuration is done using Configuration -> Application settings, with the same names and values.
+
+Here's an [ASP.NET Core Identity with Cosmos DB](https://alejandroruizvarela.blogspot.com/2018/11/aspnet-core-identity-with-cosmos-db.html) article.
+
+To alter the Identity-related pages, we scaffolded them using [these instructions.](https://docs.microsoft.com/en-us/aspnet/core/security/authentication/scaffold-identity?view=aspnetcore-3.1&tabs=netcore-cli)
+
+[These suggestions](https://korzh.com/blogs/dotnet-stories/add-extra-user-claims-aspnet-core-webapp) for adding claims to the ClaimsPrincipals have been helpful as a guide for customising Identity.
+
+To help find existing users in the Azure Cosmos DB, use a query like this:
+
+```sql
+SELECT * FROM c WHERE STARTSWITH(c.id, "IdentityUser")
+```
+
+or after the ApplicationUser change,
+
+```sql
+SELECT * FROM c WHERE STARTSWITH(c.id, "IdentityUser")
+```
+
+To specify which user should be granted IsAdmin on startup if no user has admin yet:
+
+```powershell
+dotnet user-secrets set Authentication:AdminUser <user email>
+```
 
 ## Data Store
 
