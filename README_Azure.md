@@ -67,6 +67,19 @@ To specify which user should be granted IsAdmin on startup if no user has admin 
 dotnet user-secrets set Authentication:AdminUser <user email>
 ```
 
+## Microsoft Authentication
+
+[The basics](https://docs.microsoft.com/en-us/aspnet/core/security/authentication/social/microsoft-logins?view=aspnetcore-3.1).
+
+You should find that the App Service application already has its own entry in "App Registrations" in Azure.  The client id will be on the overview page.  Generate a client secret.  Add our redirect URI to the list of allowed redirect URIs in the Authentication section, e.g. `https://pf2npc13814.azurewebsites.net/signin-microsoft`.
+
+Like Google authentication, we expect some secrets:
+
+```powershell
+dotnet user-secrets set Authentication:Microsoft:ClientId <client id> --project npcblas2\npcblas2.csproj
+dotnet user-secrets set Authentication:Microsoft:ClientSecret <client secret> --project npcblas2\npcblas2.csproj
+```
+
 ## Data Store
 
 For localhost testing, install the [Azure Cosmos Emulator](https://docs.microsoft.com/en-us/azure/cosmos-db/local-emulator).
