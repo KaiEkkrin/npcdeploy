@@ -95,3 +95,11 @@ dotnet user-secrets set Cosmos:DatabaseName <database name>
 Azure app service configuration is done as above.
 
 [How to do relations with EF Core and Cosmos DB.](https://csharp.christiannagel.com/2019/04/24/cosmosdbwithefcore/)
+
+## Enabling OneDrive access
+
+In the App Registration for the application in Azure, we add "Microsoft Graph" to the API permissions, using Delegated permissions.  We check: email, openid, profile, offline_access, files.readwrite.  [How to authorize the application](https://docs.microsoft.com/en-us/onedrive/developer/rest-api/getting-started/graph-oauth?view=odsp-graph-online)
+
+[How to access OneDrive](https://docs.microsoft.com/en-us/onedrive/developer/rest-api/concepts/direct-endpoint-differences?view=odsp-graph-online)
+
+There seem to be some issues with saving the access tokens: see [issue on Github](https://github.com/aspnet/Security/issues/1706), [another](https://github.com/aspnet/Security/issues/1685).  [Here is the sample](https://github.com/dotnet/aspnetcore/tree/master/src/Security/samples/Identity.ExternalClaims) that performs the correct incantations, apparently.
